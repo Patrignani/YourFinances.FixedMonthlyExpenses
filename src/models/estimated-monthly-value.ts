@@ -5,15 +5,19 @@ import { ResultModel } from './response/result-model';
 
 export interface IEstimatedMonthlyValue extends IBasic {
     identification: string;
-    initialDate: Date;
-    finalDate: Date;
+    initialMonthAndYear: Date;
+    finalMonthAndYear: Date;
     noEndDate: boolean;
+    typeRegister: Number;
+    numberDay:Number;
     value: Number;
-    accountId: number;
+    accountId: Number;
+    active: boolean;
+    editionUserId: Number;
     cashFlowGrouping: Schema.Types.ObjectId;
 }
 
-export function ValidBoxGroup(estimatedMonthlyValue: IEstimatedMonthlyValue): IResultModel<IEstimatedMonthlyValue> {
+export function ValidEstimatedMonthlyValue(estimatedMonthlyValue: IEstimatedMonthlyValue): IResultModel<IEstimatedMonthlyValue> {
    
     let value = new ResultModel<IEstimatedMonthlyValue>();
 
@@ -30,13 +34,13 @@ export function ValidBoxGroup(estimatedMonthlyValue: IEstimatedMonthlyValue): IR
         value.messages.push("Identificação tem que conter no máximo 200 caracter!")
     }
 
-    if(!estimatedMonthlyValue.initialDate)
+    if(!estimatedMonthlyValue.initialMonthAndYear)
     {
-        value.messages.push("Campo Data inicial é obigatória!")
+        value.messages.push("Campo Mês e Ano inicial é obigatória!")
     }
-    if(!estimatedMonthlyValue.finalDate)
+    if(!estimatedMonthlyValue.finalMonthAndYear)
     {
-        value.messages.push("Campo Data Final é obigatória!")
+        value.messages.push("Campo Mês e Ano Final é obigatória!")
     }
     if(!estimatedMonthlyValue.value)
     {
@@ -49,6 +53,26 @@ export function ValidBoxGroup(estimatedMonthlyValue: IEstimatedMonthlyValue): IR
     if(!estimatedMonthlyValue.cashFlowGrouping)
     {
         value.messages.push("Campo Agrupamento de fluxos de caixa é obigatória!")
+    }
+    if(!estimatedMonthlyValue.numberDay || estimatedMonthlyValue.numberDay  <= 0)
+    {
+        value.messages.push("Campo de Dias é obigatória!")
+    }
+    if(!estimatedMonthlyValue.typeRegister || estimatedMonthlyValue.typeRegister  <= 0)
+    {
+        value.messages.push("Campo Tipo de Registro é obigatória!")
+    }
+    else if(estimatedMonthlyValue.typeRegister > 3)
+    {
+        value.messages.push("Campo Tipo de Registro é invalido!")
+    }
+    if(!estimatedMonthlyValue.active)
+    {
+        value.messages.push("Campo 'Ativo?' é obigatória!")
+    }
+    if(!estimatedMonthlyValue.editionUserId)
+    {
+        value.messages.push("Id do usuário de edição é obigatória!")
     }
 
     value.success = value.messages.length == 0;
@@ -63,11 +87,11 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
         type: String,
         require: true
     },
-    initialDate: {
+    initialMonthAndYear: {
         type: Date,
         require: true
     },
-    finalDate: {
+    finalMonthAndYear: {
         type: Date,
         require: true
     },
@@ -82,6 +106,26 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
     accountId:
     {
         type: Number,
+        require: true
+    },
+    typeRegister:
+    {
+        type: Number,
+        require: true
+    },
+    numberDay:
+    {
+        type: Number,
+        require: true
+    },
+    active:
+    {
+        type: Boolean,
+        require: true
+    },
+    editionUserId:
+    {
+        type: Boolean,
         require: true
     },
     cashFlowGrouping:

@@ -1,4 +1,4 @@
-npm install typescript gulp gulp-typescript http express debug body-parser mongoose cors passport passport-jwt --save
+npm install typescript gulp gulp-typescript http express debug body-parser mongoose cors passport passport-jwt noder.io compression cpx --save
 
 ./node_modules/.bin/tsc --init
 
