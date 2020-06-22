@@ -1,4 +1,4 @@
-import * as fixedMonthlyExpensesController from '../controllers/fixed-monthly-expenses-controller'
+import * as fixedMonthlyExpensesController from '../controllers/estimated-monthly-value-controller'
 import * as express from "express";
 
 const router = express.Router();

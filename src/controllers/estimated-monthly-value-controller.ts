@@ -19,13 +19,13 @@ export async function Post(req: any, res: any) {
                 identification: req.body.identification,
                 accountId: result.Account_Id,
                 editionUserId: result.Id_User,
-                initialMonthAndYear: result.initialMonthAndYear,
-                finalMonthAndYear:result.finalMonthAndYear,
-                noEndDate: result.noEndDate,
-                typeRegister:result.typeRegister,
-                numberDay: result.numberDay,
-                value: result.value,
-                cashFlowGrouping: result.cashFlowGrouping
+                initialMonthAndYear: req.body.initialMonthAndYear,
+                finalMonthAndYear:req.body.finalMonthAndYear,
+                noEndDate: req.body.noEndDate,
+                typeRegister:req.body.typeRegister,
+                numberDay: req.body.numberDay,
+                value: req.body.value,
+                cashFlowGrouping: req.body.cashFlowGrouping
             });
 
         value = ValidEstimatedMonthlyValue(estimatedMonthlyValue);
@@ -54,9 +54,14 @@ export async function GetById(req: any, res: any) {
         });
 
         const estimatedMonthlyValue = await EstimatedMonthlyValue.findOne({ _id: req.params.id, accountId: result.Account_Id });
-        var cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id, accountId: result.Account_Id });
-        estimatedMonthlyValue["accountId"] = {};
-        estimatedMonthlyValue["accountId"] =cashFlowGrouping;
+        var cashFlowGrouping = await CashFlowGrouping.findOne({ _id: estimatedMonthlyValue.cashFlowGrouping, accountId: result.Account_Id });
+     
+      console.log(estimatedMonthlyValue)
+        estimatedMonthlyValue["accountcashFlowGroupingId"] = {};
+        estimatedMonthlyValue["cashFlowGrouping"] =cashFlowGrouping;
+
+        console.log(cashFlowGrouping)
+        //console.log(estimatedMonthlyValue)
         value.data = estimatedMonthlyValue;
 
         res.status(200).json(value);

@@ -125,7 +125,7 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
     },
     editionUserId:
     {
-        type: Boolean,
+        type: Number,
         require: true
     },
     cashFlowGrouping:
@@ -139,5 +139,7 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
         timestamps: true,
 
     });
+
+    EstimatedMonthlyValueSchema.index({identification:1, accountId:1 }, {unique: true });
 
 export default model<IEstimatedMonthlyValue>('EstimatedMonthlyValue', EstimatedMonthlyValueSchema);
