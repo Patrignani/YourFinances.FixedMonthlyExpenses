@@ -56,12 +56,9 @@ export async function GetById(req: any, res: any) {
         const estimatedMonthlyValue = await EstimatedMonthlyValue.findOne({ _id: req.params.id, accountId: result.Account_Id });
         var cashFlowGrouping = await CashFlowGrouping.findOne({ _id: estimatedMonthlyValue.cashFlowGrouping, accountId: result.Account_Id });
      
-      console.log(estimatedMonthlyValue)
         estimatedMonthlyValue["accountcashFlowGroupingId"] = {};
         estimatedMonthlyValue["cashFlowGrouping"] =cashFlowGrouping;
 
-        console.log(cashFlowGrouping)
-        //console.log(estimatedMonthlyValue)
         value.data = estimatedMonthlyValue;
 
         res.status(200).json(value);

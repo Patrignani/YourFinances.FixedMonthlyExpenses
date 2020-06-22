@@ -9,7 +9,7 @@ export interface IEstimatedMonthlyValue extends IBasic {
     finalMonthAndYear: Date;
     noEndDate: boolean;
     typeRegister: Number;
-    numberDay:Number;
+    numberDay: Number;
     value: Number;
     accountId: Number;
     active: boolean;
@@ -18,60 +18,58 @@ export interface IEstimatedMonthlyValue extends IBasic {
 }
 
 export function ValidEstimatedMonthlyValue(estimatedMonthlyValue: IEstimatedMonthlyValue): IResultModel<IEstimatedMonthlyValue> {
-   
+
     let value = new ResultModel<IEstimatedMonthlyValue>();
 
-    if (!estimatedMonthlyValue.identification) 
-    {
+    if (!estimatedMonthlyValue.identification) {
         value.messages.push("Campo Identificação é obigatória!")
     }
-    else if(estimatedMonthlyValue.identification.trim().length < 1)
-    {
+    else if (estimatedMonthlyValue.identification.trim().length < 1) {
         value.messages.push("Identificação tem que conter no mínimo 1 caracter!")
-    } 
-    else if (estimatedMonthlyValue.identification.trim().length > 200)
-    {
+    }
+    else if (estimatedMonthlyValue.identification.trim().length > 200) {
         value.messages.push("Identificação tem que conter no máximo 200 caracter!")
     }
 
-    if(!estimatedMonthlyValue.initialMonthAndYear)
-    {
-        value.messages.push("Campo Mês e Ano inicial é obigatória!")
-    }
-    if(!estimatedMonthlyValue.finalMonthAndYear)
-    {
-        value.messages.push("Campo Mês e Ano Final é obigatória!")
-    }
-    if(!estimatedMonthlyValue.value)
-    {
+    if (!estimatedMonthlyValue.value) {
         value.messages.push("Campo Valor é obigatória!")
     }
-    if(!estimatedMonthlyValue.accountId)
-    {
+    if (!estimatedMonthlyValue.accountId) {
         value.messages.push("Campo Conta Id é obigatória!")
     }
-    if(!estimatedMonthlyValue.cashFlowGrouping)
-    {
+    if (!estimatedMonthlyValue.cashFlowGrouping) {
         value.messages.push("Campo Agrupamento de fluxos de caixa é obigatória!")
     }
-    if(!estimatedMonthlyValue.numberDay || estimatedMonthlyValue.numberDay  <= 0)
-    {
-        value.messages.push("Campo de Dias é obigatória!")
-    }
-    if(!estimatedMonthlyValue.typeRegister || estimatedMonthlyValue.typeRegister  <= 0)
-    {
+
+    if (!estimatedMonthlyValue.typeRegister || estimatedMonthlyValue.typeRegister <= 0) {
         value.messages.push("Campo Tipo de Registro é obigatória!")
     }
-    else if(estimatedMonthlyValue.typeRegister > 3)
-    {
+    else if (estimatedMonthlyValue.typeRegister > 3) {
         value.messages.push("Campo Tipo de Registro é invalido!")
     }
-    if(!estimatedMonthlyValue.active)
-    {
+    else{
+        switch (estimatedMonthlyValue.typeRegister) {
+            case 1:
+                if (!estimatedMonthlyValue.initialMonthAndYear) {
+                    value.messages.push("Campo Mês e Ano inicial é obigatória!")
+                }
+                if (!estimatedMonthlyValue.finalMonthAndYear && !estimatedMonthlyValue.noEndDate) {
+                    value.messages.push("Campo Mês e Ano Final é obigatória!")
+                }
+                break;
+            case 2:
+            case 3:
+    
+                if (!estimatedMonthlyValue.numberDay || estimatedMonthlyValue.numberDay <= 0) {
+                    value.messages.push("Campo de Dias é obigatória!")
+                }
+                break;
+        }    
+    }
+    if (!estimatedMonthlyValue.active) {
         value.messages.push("Campo 'Ativo?' é obigatória!")
     }
-    if(!estimatedMonthlyValue.editionUserId)
-    {
+    if (!estimatedMonthlyValue.editionUserId) {
         value.messages.push("Id do usuário de edição é obigatória!")
     }
 
@@ -83,19 +81,19 @@ export function ValidEstimatedMonthlyValue(estimatedMonthlyValue: IEstimatedMont
 }
 
 const EstimatedMonthlyValueSchema: Schema = new Schema({
-    identification:{
+    identification: {
         type: String,
         require: true
     },
     initialMonthAndYear: {
         type: Date,
-        require: true
+        require: false
     },
     finalMonthAndYear: {
         type: Date,
-        require: true
+        require: false
     },
-    noEndDate:{
+    noEndDate: {
         type: Boolean,
         require: false
     },
@@ -116,7 +114,7 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
     numberDay:
     {
         type: Number,
-        require: true
+        require: false
     },
     active:
     {
@@ -140,6 +138,6 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
 
     });
 
-    EstimatedMonthlyValueSchema.index({identification:1, accountId:1 }, {unique: true });
+EstimatedMonthlyValueSchema.index({ identification: 1, accountId: 1 }, { unique: true });
 
 export default model<IEstimatedMonthlyValue>('EstimatedMonthlyValue', EstimatedMonthlyValueSchema);
