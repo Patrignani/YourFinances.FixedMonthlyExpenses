@@ -90,4 +90,4 @@ const CashFlowGroupingSchema: Schema = new Schema({
     timestamps: true,
 });
 
-    export default model<ICashFlowGrouping>('CashFlowGrouping', CashFlowGroupingSchema);
+export default model<ICashFlowGrouping>('CashFlowGrouping', CashFlowGroupingSchema);

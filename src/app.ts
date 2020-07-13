@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { SystemConfig } from '../src/config/system-config';
-import fixedMonthlyExpensesRoutes from "./routes/estimated-monthly-value-route";
+import fixedMonthlyExpensesRoutes from "./routes/fixed-monthly-expense";
 import * as passport from "./config/auth";
 import * as compression from "compression";
 
@@ -16,6 +16,6 @@ mongoose.connect(SystemConfig.MONGO_CONNECTION,
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/api/estimatedmonthlyvalue', passport.Authenticate(),fixedMonthlyExpensesRoutes);
+app.use('/api/fixedMonthlyExpense', passport.Authenticate(),fixedMonthlyExpensesRoutes);
 
 export { app };

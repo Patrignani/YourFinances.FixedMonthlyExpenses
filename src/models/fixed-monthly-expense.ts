@@ -2,8 +2,9 @@ import { Schema, model } from 'mongoose';
 import { IBasic } from './interfaces/basic';
 import { IResultModel } from './interfaces/result-model';
 import { ResultModel } from './response/result-model';
+import CashFlowGrouping from "./cash-flow-grouping";
 
-export interface IEstimatedMonthlyValue extends IBasic {
+export interface IFixedMonthlyExpense extends IBasic {
     identification: string;
     initialMonthAndYear: Date;
     finalMonthAndYear: Date;
@@ -17,9 +18,9 @@ export interface IEstimatedMonthlyValue extends IBasic {
     cashFlowGrouping: Schema.Types.ObjectId;
 }
 
-export function ValidEstimatedMonthlyValue(estimatedMonthlyValue: IEstimatedMonthlyValue): IResultModel<IEstimatedMonthlyValue> {
+export function ValidFixedMonthlyExpense(estimatedMonthlyValue: IFixedMonthlyExpense): IResultModel<IFixedMonthlyExpense> {
 
-    let value = new ResultModel<IEstimatedMonthlyValue>();
+    let value = new ResultModel<IFixedMonthlyExpense>();
 
     if (!estimatedMonthlyValue.identification) {
         value.messages.push("Campo Identificação é obigatória!")
@@ -80,7 +81,7 @@ export function ValidEstimatedMonthlyValue(estimatedMonthlyValue: IEstimatedMont
     return value;
 }
 
-const EstimatedMonthlyValueSchema: Schema = new Schema({
+const FixedMonthlyExpenseSchema: Schema = new Schema({
     identification: {
         type: String,
         require: true
@@ -138,6 +139,9 @@ const EstimatedMonthlyValueSchema: Schema = new Schema({
 
     });
 
-EstimatedMonthlyValueSchema.index({ identification: 1, accountId: 1 }, { unique: true });
+    FixedMonthlyExpenseSchema.index({ identification: 1, accountId: 1 }, { unique: true });
+//abrir conexão
+CashFlowGrouping;
 
-export default model<IEstimatedMonthlyValue>('EstimatedMonthlyValue', EstimatedMonthlyValueSchema);
+export default model<IFixedMonthlyExpense>('FixedMonthlyExpenseSchema', FixedMonthlyExpenseSchema);
+
